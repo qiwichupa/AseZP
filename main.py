@@ -16,6 +16,7 @@ for page_layout in pdfminer.high_level.extract_pages(file):
             if textline.get_text()[0:4] in incomecodes:
                 j = i
                 while len(textcontainers[j].get_text().split(",")) < 2: j += 1
+                if j < i+3 and len(textcontainers[j+1].get_text().split(",")) == 2: j += 1
                 title = textcontainers[i].get_text().strip()[5:]
                 value = textcontainers[j].get_text().strip()
                 print("{} - {}".format(title, value))
@@ -26,6 +27,7 @@ for page_layout in pdfminer.high_level.extract_pages(file):
             if textline.get_text()[0:4] in outcomecodes:
                 j = i
                 while len(textcontainers[j].get_text().split(",")) < 2: j += 1
+                if j < i+3 and len(textcontainers[j+1].get_text().split(",")) == 2: j += 1
                 title = textcontainers[i].get_text().strip()[5:]
                 value = textcontainers[j].get_text().strip()
                 print("{} - {}".format(title, value))
