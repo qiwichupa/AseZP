@@ -5,6 +5,7 @@ import datetime
 import pandas
 
 from yaml_config import YamlConfig
+from app_dirs import AppDirs
 
 incomecodes = {  '0010': 'Оплата по окладу (часы)'
                    , '0206': 'ОплатаЗаРаботуВых(Окл+ИВ)'
@@ -94,6 +95,11 @@ def to_ods(file, incomecodes, outcomecodes, date, values):
     sheet.save_as(file)
 
 if __name__  == '__main__':
+    appdir = AppDirs('AseZP', isportable=True)
+    configfile = appdir.get_file('settings.conf')
+    config = YamlConfig(configfile)
+    config.setValue('incomecodes', incomecodes)
+    config.setValue('outcomecodes', outcomecodes)
     file = "2021.01.pdf"
     date, values = from_pdf(file, incomecodes, outcomecodes)
     file='/mnt/autofs/public/test.ods'

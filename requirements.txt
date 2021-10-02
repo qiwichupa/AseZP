@@ -2,3 +2,4 @@ pdfminer.six==20201018
 pyexcel~=0.6.7
 pandas~=1.3.3
 PyYAML~=5.4.1
+appdirs~=1.4.4
