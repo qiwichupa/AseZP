@@ -7,15 +7,6 @@ import pandas
 from yaml_config import YamlConfig
 from app_dirs import AppDirs
 
-incomecodes = {  '0010': 'Оплата по окладу (часы)'
-                   , '0206': 'ОплатаЗаРаботуВых(Окл+ИВ)'
-                   , '0207': 'ДоплатаЗаРаботуВых(Ок+ИВ)'
-                   , '1010': 'ИСН'
-                   , '1024': 'Индексирующая выплата'
-                   , '1274': 'Оперативная премия'
-                   }
-outcomecodes = {'/322': 'НДФЛ 13%'}
-
 def from_pdf(file, incomecodes, outcomecodes):
     months = { 'январь':    '01',
               'февраль':   '02',
@@ -98,9 +89,10 @@ if __name__  == '__main__':
     appdir = AppDirs('AseZP', isportable=True)
     configfile = appdir.get_file('settings.conf')
     config = YamlConfig(configfile)
-    config.setValue('incomecodes', incomecodes)
-    config.setValue('outcomecodes', outcomecodes)
-    file = "2021.01.pdf"
+    incomecodes = config.value('incomecodes')
+    outcomecodes = config.value('outcomecodes')
+
+    file = "2021.02.pdf"
     date, values = from_pdf(file, incomecodes, outcomecodes)
     file='/mnt/autofs/public/test.ods'
     to_ods(file, incomecodes, outcomecodes, date, values)
