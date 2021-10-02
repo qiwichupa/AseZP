@@ -1,3 +1,4 @@
+import os
 import pdfminer.high_level
 import pdfminer.layout
 import pyexcel
@@ -87,12 +88,15 @@ def to_ods(file, incomecodes, outcomecodes, date, values):
 
 if __name__  == '__main__':
     appdir = AppDirs('AseZP', isportable=True)
+    datadir = appdir.get_datadir()
     configfile = appdir.get_file('settings.conf')
     config = YamlConfig(configfile)
     incomecodes = config.value('incomecodes')
     outcomecodes = config.value('outcomecodes')
 
-    file = "2021.02.pdf"
-    date, values = from_pdf(file, incomecodes, outcomecodes)
-    file='/mnt/autofs/public/test.ods'
-    to_ods(file, incomecodes, outcomecodes, date, values)
+    for file in os.listdir(datadir):
+        if file.endswith('.pdf'):
+            fromfile = os.path.join(datadir, file)
+            date, values = from_pdf(fromfile, incomecodes, outcomecodes)
+            outfile = appdir.get_file('stat.ods')
+            to_ods(outfile, incomecodes, outcomecodes, date, values)
