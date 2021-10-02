@@ -1,6 +1,10 @@
 import pdfminer.high_level
 import pdfminer.layout
 import pyexcel
+import datetime
+import pandas
+
+from yaml_config import YamlConfig
 
 incomecodes = {  '0010': 'Оплата по окладу (часы)'
                    , '0206': 'ОплатаЗаРаботуВых(Окл+ИВ)'
@@ -65,11 +69,9 @@ def from_pdf(file, incomecodes, outcomecodes):
 def to_ods(file, incomecodes, outcomecodes, date, values):
     sheet = pyexcel.get_sheet(file_name=file)
 
-    colnames = ['2021.01', '2021.02', '2021.03', '2021.04', '2021.05', '2021.06'
-        , '2021.07', '2021.08', '2021.09', '2021.10', '2021.11', '2021.12'
-        , '2022.01', '2022.02', '2022.03', '2022.04', '2022.05', '2022.06'
-        , '2022.07', '2022.08', '2022.09', '2022.10', '2022.11', '2022.12'
-                ]
+    currentmonth = datetime.date.today().strftime("%Y.%m")
+    # ['2021.01', '2021.02'...
+    colnames = pandas.date_range('2021-01-01',currentmonth, freq='MS').strftime("%Y.%m").tolist()
 
     sheet[0, 1] = 'названия'
     for i, colname in enumerate(colnames):
