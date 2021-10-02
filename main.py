@@ -8,6 +8,15 @@ import pandas
 from yaml_config import YamlConfig
 from app_dirs import AppDirs
 
+defaultincomecodes = {  '0010': 'Оплата по окладу (часы)'
+                      , '0206': 'ОплатаЗаРаботуВых(Окл+ИВ)'
+                      , '0207': 'ДоплатаЗаРаботуВых(Ок+ИВ)'
+                      , '1010': 'ИСН'
+                      , '1024': 'Индексирующая выплата'
+                      , '1274': 'Оперативная премия'
+                      }
+defaultoutcomecodes = {'/322': 'НДФЛ 13%'}
+
 def from_pdf(file, incomecodes, outcomecodes):
     months = { 'январь':    '01',
               'февраль':   '02',
@@ -91,6 +100,10 @@ if __name__  == '__main__':
     datadir = appdir.get_datadir()
     configfile = appdir.get_file('settings.conf')
     config = YamlConfig(configfile)
+    if not config.value('incomecodes'):
+        config.setValue('incomecodes', defaultincomecodes)
+    if not config.value('outcomecodes'):
+        config.setValue('outcomecodes', defaultoutcomecodes)
     incomecodes = config.value('incomecodes')
     outcomecodes = config.value('outcomecodes')
 
